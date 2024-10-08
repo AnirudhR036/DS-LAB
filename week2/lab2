@@ -1,0 +1,101 @@
+#include<stdio.h>
+#include<string.h>
+#include<conio.h>
+
+void push(char symbol);
+char pop();
+void infixtopostfix();
+int precedence(char symbol);
+
+int top=-1, pos=0, length, indexnum=0, stack[20];
+char infix[20], postfix[20], symbol, temp;
+
+void main(){
+
+ printf("Enter Infix expression\n");
+ scanf("%s", infix);
+
+ infixtopostfix();
+
+ printf("The Postfix expression is %s", postfix);
+
+}
+
+void infixtopostfix(){
+
+   length=strlen(infix);
+   push('#');
+   while(indexnum<length){
+    symbol=infix[indexnum];
+    switch(symbol){
+            case '(':push(symbol);
+                     break;
+            case ')':temp=pop();
+                     while(temp!='('){
+                        postfix[pos++]=temp;
+
+                        temp=pop();
+                     }
+                     break;
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '^':while(precedence(stack[top])>=precedence(symbol)){
+
+                     temp=pop();
+                     postfix[pos++]=temp;
+
+
+
+                    }
+                    push(symbol);
+                    break;
+
+            default:postfix[pos++]=symbol;break;
+
+
+    }
+    indexnum++;
+
+   }
+   while(top>0){
+    temp=pop();
+    postfix[pos++]=temp;
+
+   }
+
+}
+
+void push(char symb){
+   top=top+1;
+   stack[top]=symb;
+
+}
+
+char pop(){
+
+  char chr;
+  chr=stack[top];
+  top--;
+  return chr;
+
+}
+
+int precedence(char symbol){
+
+  int p;
+  switch(symbol){
+
+      case'^': p=3;break;
+      case'*':
+      case'/':p=2;break;
+      case'+':
+      case'-':p=1;break;
+      case'(':p=0;break;
+      case'#':p=-1;break;
+
+  }
+return p;
+
+}
