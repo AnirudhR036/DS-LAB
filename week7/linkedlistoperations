@@ -1,0 +1,190 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node {
+    int data;
+    struct node* link;
+} node;
+
+
+node *Start1 = NULL, *Start2 = NULL, *Curr, *Start=NULL, *new1, *temp;
+
+void create(node**n) {
+    // Create list logic
+}
+void display(node**n) {
+    // Display list logic
+}
+void concatenate(node**n1, node**n2) {
+    // Concatenate lists logic
+}
+void reverse(node**no) {
+    // Reverse list logic
+}
+void sort(node**n) {
+    // Sort list logic
+}
+void main() {
+    int cho;
+    while (1) {
+        printf("Enter your choice \n");
+        printf("1.CREATE 1\n2.DISPLAY 1\n3.CREATE 2\n4.DISPLAY 2\n5.CONCATENATE\n6.DISPLAY CONCATENATED LIST\n7.REVERSE A LIST\n8.SORT A LIST\n9.EXIT\n");
+        scanf("%d", &cho);
+        switch (cho) {
+            case 1: create(&Start1); break;
+            case 2: display(&Start1); break;
+            case 3: create(&Start2); break;
+            case 4: display(&Start2); break;
+            case 5: concatenate(&Start1, &Start2); break;
+            case 6: display(&Start); break;
+            case 7: {
+                printf("Which linked list do you want to reverse?\n");
+                printf("a. LIST 1\nb. LIST 2\nc. CONCATENATED LIST\nd. EXIT\n");
+                char cha;
+                // Clear the input buffer before reading the next character
+                getchar(); // to consume any leftover '\n' from previous input
+                scanf("%c", &cha);
+
+                while(1) {
+                    switch(cha) {
+                        case 'a': reverse(&Start1); break;
+                        case 'b': reverse(&Start2); break;
+                        case 'c': reverse(&Start); break;
+                        case 'd': exit(0); break;
+                        default: printf("Invalid choice\n"); return; // Exiting the reverse menu
+                    }
+
+                    printf("Which linked list do you want to reverse?\n");
+                    printf("a. LIST 1\nb. LIST 2\nc. CONCATENATED LIST\nd. EXIT\n");
+                    getchar(); // Clear any leftover input before scanning new character
+                    scanf("%c", &cha); // Get new user input
+                }
+                break; // Exit switch for case 7
+            }
+            case 8: {
+                printf("Which linked list do you want to sort?\n");
+                printf("a. LIST 1\nb. LIST 2\nc. CONCATENATED LIST\nd. EXIT\n");
+                char chai;
+                // Clear the input buffer before reading the next character
+                getchar(); // to consume any leftover '\n' from previous input
+                scanf("%c", &chai);
+
+                while(1) {
+                    switch(chai) {
+                        case 'a': sort(&Start1); break;
+                        case 'b': sort(&Start2); break;
+                        case 'c': sort(&Start); break;
+                        case 'd': exit(0); break;
+                        default: printf("Invalid choice\n"); return; // Exiting the sort menu
+                    }
+
+                    printf("Which linked list do you want to sort?\n");
+                    printf("a. LIST 1\nb. LIST 2\nc. CONCATENATED LIST\nd. EXIT\n");
+                    getchar(); // Clear any leftover input before scanning new character
+                    scanf("%c", &chai); // Get new user input
+                }
+                break; // Exit switch for case 8
+            }
+            case 9: exit(0); break;
+
+            default: printf("Invalid choice\n");
+        }
+    }
+}
+
+
+void create(node**n) {
+    char ch;
+    do {
+        new1 = (node*)malloc(sizeof(node));
+        printf("Enter data for insertion: ");
+        scanf("%d", &new1->data);
+        if (*n == NULL) {
+            *n = new1;
+            Curr = new1;
+        }
+        else {
+            Curr->link = new1;
+            Curr = new1;
+        }
+
+        printf("Do you want to insert another element? Enter Y or y for Yes, and N or n for No: ");
+        scanf(" %c", &ch);
+    } while (ch == 'Y' || ch == 'y');
+        Curr->link=NULL;
+}
+
+void display(node**n) {
+    if (*n == NULL) {
+        printf("Linked list is empty\n");
+        return;
+    }
+
+    temp = *n;
+    printf("List elements are: \n");
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->link;
+    }
+    printf("NULL\n");
+}
+
+void concatenate(node**n1, node**n2){
+    if(*n1==NULL && *n2==NULL){
+        printf("Both linked lists are empty\n");
+    }
+    if(*n1==NULL){
+        Start=n2;
+    }
+    if(*n2==NULL){
+        Start=n1;
+    }
+    else{
+        Start=*n1;
+        temp=*n1;
+        while(temp->link!=NULL){
+            temp=temp->link;
+        }
+        if(temp->link==NULL){
+            temp->link=*n2;
+        }
+        return;
+    }
+}
+
+void reverse(node** no) {
+    if (*no == NULL) {
+        printf("Linked list is empty \n");
+    } else {
+        node *a = NULL, *b = NULL, *c = NULL;
+        a = *no;
+        while (a != NULL) {
+            c = b;
+            b = a;
+            a = a->link;
+            b->link = c;
+        }
+        *no = b;
+        printf("Displaying the reversed list\n");
+        display(no);
+    }
+}
+
+void sort(node **n) {
+    if (*n == NULL) {
+        printf("List is empty, nothing to sort\n");
+        return;
+    }
+
+    node *i, *j;
+    int tempData;
+    for (i = *n; i != NULL; i = i->link) {
+        for (j = i->link; j != NULL; j = j->link) {
+            if (i->data > j->data) {
+                tempData = i->data;
+                i->data = j->data;
+                j->data = tempData;
+            }
+        }
+    }
+    printf("List sorted successfully.\n");
+}
